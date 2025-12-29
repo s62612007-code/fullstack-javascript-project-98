@@ -1,42 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>MENTAL_MASTER_V1.0</title>
+    <meta charset="UTF-8">
+    <title>MATH_CHALLENGE.EXE</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="pantalla-inicio" class="ventana">
-        <div class="barra-titulo">
-            <span>LOGIN.EXE</span>
-        </div>
-        <div class="cuerpo-programa">
-            <p>INGRESE NOMBRE DEL OPERADOR:</p>
-            <input type="text" id="nombre-usuario" placeholder="NOMBRE">
-            <br><br>
-            <button onclick="iniciarJuego()">ENTRAR</button>
+
+    <div class="monitor">
+        <div class="window">
+            <div class="title-bar">
+                <div class="title-text">Math Challenge v1.0 - [Terminal]</div>
+                <div class="title-controls">
+                    <button class="win-btn">_</button>
+                    <button class="win-btn">X</button>
+                </div>
+            </div>
+
+            <div class="window-body">
+                <div id="pantalla-inicio">
+                    <h1 class="blink">SISTEMA LISTO...</h1>
+                    <p>POR FAVOR, IDENTIFÍQUESE PARA ACCEDER:</p>
+                    <div class="input-container">
+                        <label>NOMBRE_USUARIO>:</label>
+                        <input type="text" id="nombre-usuario" class="retro-input" maxlength="12" autocomplete="off">
+                    </div>
+                    <br>
+                    <button onclick="iniciarJuego()" class="retro-btn">EJECUTAR (START)</button>
+                    <p class="footer-text">Copyright (C) 1990-1995 MathSoft Corp.</p>
+                </div>
+
+                <div id="ventana-juego" style="display: none;">
+                    <table class="stats-table">
+                        <tr>
+                            <td>OPERADOR: <span id="display-nombre"></span></td>
+                            <td>SCORE: <span id="puntos" class="digital">0000</span></td>
+                            <td>TIME: <span id="segundos" class="digital">50</span>s</td>
+                        </tr>
+                    </table>
+
+                    <div class="game-core">
+                        <div class="screen-display">
+                            <div id="problema">CALCULANDO...</div>
+                        </div>
+                        
+                        <div class="input-area">
+                            <label>RESPUESTA_></label>
+                            <input type="number" id="entrada" class="retro-input-game">
+                            <button onclick="verificar()" class="retro-btn">ENTER</button>
+                        </div>
+
+                        <div class="status-bar">
+                            <span id="mensaje">ESPERANDO ENTRADA...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="ventana-juego" class="ventana" style="display:none;">
-        <div class="barra-titulo">
-            <span>FIBO_MATH.EXE</span>
-            <div class="botones-ventana">[-] [X]</div>
-        </div>
-        
-        <div class="cuerpo-programa">
-            <p>OPERADOR: <span id="display-nombre">---</span></p>
-            <hr>
-            <div id="pantalla">
-                <p style="color: red; font-weight: bold;">TIEMPO: <span id="segundos">12</span>s</p>
-                <p>PUNTAJE: <span id="puntos">0000</span></p>
-                <hr>
-                <h1 id="problema">...</h1>
-                <input type="number" id="entrada">
-                <br><br>
-                <button onclick="verificar()" id="btn-ok">ACEPTAR</button>
-            </div>
-            <p id="mensaje">SISTEMA LISTO</p>
-        </div>
-    </div>
+    <script src="script.js"></script>
 </body>
 </html>
