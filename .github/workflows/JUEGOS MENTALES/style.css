@@ -1,0 +1,63 @@
+body {
+    background-color: #008080;
+    font-family: "Courier New", monospace;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.ventana {
+    background-color: #c0c0c0;
+    border: 3px outset #ffffff;
+    width: 350px;
+    padding: 2px;
+    box-shadow: 5px 5px 0px #000;
+}
+
+.barra-titulo {
+    background: linear-gradient(90deg, #000080, #1084d0);
+    color: white;
+    padding: 3px 10px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.cuerpo-programa {
+    padding: 15px;
+    border: 1px solid #000;
+    text-align: center;
+}
+
+#problema {
+    background-color: #000;
+    color: #00ff00;
+    padding: 15px;
+    border: 3px inset #808080;
+    font-size: 24px;
+}
+
+input {
+    background-color: #fff;
+    border: 3px inset #808080;
+    padding: 5px;
+    font-size: 16px;
+    text-align: center;
+}
+
+button {
+    background-color: #c0c0c0;
+    border: 2px outset #ffffff;
+    padding: 5px 15px;
+    cursor: pointer;
+    font-family: "Courier New", monospace;
+    font-weight: bold;
+}
+
+button:active {
+    border: 2px inset #ffffff;
+}
+
+hr { border: 1px inset #fff; }

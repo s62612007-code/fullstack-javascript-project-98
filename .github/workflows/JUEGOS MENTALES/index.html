@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MENTAL_MASTER_V1.0</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="pantalla-inicio" class="ventana">
+        <div class="barra-titulo">
+            <span>LOGIN.EXE</span>
+        </div>
+        <div class="cuerpo-programa">
+            <p>INGRESE NOMBRE DEL OPERADOR:</p>
+            <input type="text" id="nombre-usuario" placeholder="NOMBRE">
+            <br><br>
+            <button onclick="iniciarJuego()">ENTRAR</button>
+        </div>
+    </div>
+
+    <div id="ventana-juego" class="ventana" style="display:none;">
+        <div class="barra-titulo">
+            <span>FIBO_MATH.EXE</span>
+            <div class="botones-ventana">[-] [X]</div>
+        </div>
+        
+        <div class="cuerpo-programa">
+            <p>OPERADOR: <span id="display-nombre">---</span></p>
+            <hr>
+            <div id="pantalla">
+                <p style="color: red; font-weight: bold;">TIEMPO: <span id="segundos">12</span>s</p>
+                <p>PUNTAJE: <span id="puntos">0000</span></p>
+                <hr>
+                <h1 id="problema">...</h1>
+                <input type="number" id="entrada">
+                <br><br>
+                <button onclick="verificar()" id="btn-ok">ACEPTAR</button>
+            </div>
+            <p id="mensaje">SISTEMA LISTO</p>
+        </div>
+    </div>
+</body>
+</html>
