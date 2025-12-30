@@ -1,6 +1,6 @@
 let respuestaCorrecta;
 let puntos = 0;
-let tiempo = 50;
+let tiempo = 28;
 let timerId;
 let nombreJugador = "";
 let contadorAciertos = 0; 
@@ -77,7 +77,7 @@ function verificar() {
         contadorAciertos++; 
 
         if (contadorAciertos === 3) {
-            tiempo = 50; 
+            tiempo = 28; 
             contadorAciertos = 0; 
             document.getElementById('mensaje').innerText = "!!! COMBO: TIEMPO RESET !!!";
         } else {
