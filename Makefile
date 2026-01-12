@@ -29,6 +29,9 @@ link:
 
 .PHONY: install setup brain-games brain-even brain-calc brain-gcd brain-progression brain-prime link
 
+clean-old:
+	bash scripts/cleanup.sh
+
 test-smoke:
 	node scripts/smoke.js
 
