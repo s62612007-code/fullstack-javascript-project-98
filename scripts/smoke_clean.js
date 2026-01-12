@@ -20,16 +20,26 @@ let failCount = 0;
 console.log('Smoke test E2E: ejecutar cada juego con respuestas correctas simuladas');
 
 for (const g of games) {
-  const answers = [];
-  for (let i = 0; i < 3; i += 1) {
-    const { answer } = g.mod.generateRound();
-    answers.push(answer);
-  }
+  const rounds = [];
+  const originalGenerate = g.mod.generateRound;
+  g.mod.generateRound = () => {
+    const round = originalGenerate.call(g.mod);
+    rounds.push(round);
+    return round;
+  };
 
-  const inputs = ['SmokeTester', ...answers];
+  const inputs = ['SmokeTester'];
   const originalQuestion = readlineSync.question;
   let idx = 0;
-  readlineSync.question = () => inputs[idx++] ?? '';
+  readlineSync.question = () => {
+    if (idx === 0) {
+      idx++;
+      return inputs[0];
+    }
+    const roundIdx = idx - 1;
+    idx++;
+    return rounds[roundIdx] ? rounds[roundIdx].answer : '';
+  };
 
   console.log(`\n--- Ejecutando juego: ${g.name} ---`);
   try {
@@ -41,20 +51,38 @@ for (const g of games) {
     console.error(`Error al ejecutar ${g.name}:`, err);
   }
   readlineSync.question = originalQuestion;
+  g.mod.generateRound = originalGenerate;
 }
 
 console.log('\nSmoke test E2E de fallo en primera ronda: respuesta incorrecta inmediata');
 for (const g of games) {
-  const first = g.mod.generateRound();
-  let wrong;
-  if (first.answer === 'yes') wrong = 'no';
-  else if (first.answer === 'no') wrong = 'yes';
-  else { const n = Number(first.answer); wrong = Number.isNaN(n) ? (first.answer + 'x') : String(n + 1); }
+  const rounds = [];
+  const originalGenerate = g.mod.generateRound;
+  g.mod.generateRound = () => {
+    const round = originalGenerate.call(g.mod);
+    rounds.push(round);
+    return round;
+  };
 
-  const inputs = ['SmokeTester', wrong];
+  const inputs = ['SmokeTester'];
   const originalQuestion = readlineSync.question;
   let idx = 0;
-  readlineSync.question = () => inputs[idx++] ?? '';
+  readlineSync.question = () => {
+    if (idx === 0) {
+      idx++;
+      return inputs[0];
+    }
+    const roundIdx = idx - 1;
+    idx++;
+    if (roundIdx === 0 && rounds[roundIdx]) {
+      const first = rounds[roundIdx];
+      if (first.answer === 'yes') return 'no';
+      if (first.answer === 'no') return 'yes';
+      const n = Number(first.answer);
+      return Number.isNaN(n) ? (first.answer + 'x') : String(n + 1);
+    }
+    return rounds[roundIdx] ? rounds[roundIdx].answer : '';
+  };
 
   console.log(`\n--- Ejecutando fallo primera ronda para: ${g.name} ---`);
   try {
@@ -66,21 +94,41 @@ for (const g of games) {
     console.error(`Error al ejecutar fallo primera ronda ${g.name}:`, err);
   }
   readlineSync.question = originalQuestion;
+  g.mod.generateRound = originalGenerate;
 }
 
 console.log('\nSmoke test E2E de fallo: primera correcta, segunda incorrecta');
 for (const g of games) {
-  const first = g.mod.generateRound();
-  const second = g.mod.generateRound();
-  let wrong;
-  if (second.answer === 'yes') wrong = 'no';
-  else if (second.answer === 'no') wrong = 'yes';
-  else { const n = Number(second.answer); wrong = Number.isNaN(n) ? (second.answer + 'x') : String(n + 1); }
+  const rounds = [];
+  const originalGenerate = g.mod.generateRound;
+  g.mod.generateRound = () => {
+    const round = originalGenerate.call(g.mod);
+    rounds.push(round);
+    return round;
+  };
 
-  const inputs = ['SmokeTester', first.answer, wrong];
+  const inputs = ['SmokeTester'];
   const originalQuestion = readlineSync.question;
   let idx = 0;
-  readlineSync.question = () => inputs[idx++] ?? '';
+  readlineSync.question = () => {
+    if (idx === 0) {
+      idx++;
+      return inputs[0];
+    }
+    const roundIdx = idx - 1;
+    idx++;
+    if (roundIdx === 0 && rounds[roundIdx]) {
+      return rounds[roundIdx].answer;
+    }
+    if (roundIdx === 1 && rounds[roundIdx]) {
+      const second = rounds[roundIdx];
+      if (second.answer === 'yes') return 'no';
+      if (second.answer === 'no') return 'yes';
+      const n = Number(second.answer);
+      return Number.isNaN(n) ? (second.answer + 'x') : String(n + 1);
+    }
+    return rounds[roundIdx] ? rounds[roundIdx].answer : '';
+  };
 
   console.log(`\n--- Ejecutando fallo para: ${g.name} ---`);
   try {
@@ -92,6 +140,7 @@ for (const g of games) {
     console.error(`Error al ejecutar fallo ${g.name}:`, err);
   }
   readlineSync.question = originalQuestion;
+  g.mod.generateRound = originalGenerate;
 }
 
 console.log(`\nResumen: OK: ${okCount}, Fallos: ${failCount}`);
