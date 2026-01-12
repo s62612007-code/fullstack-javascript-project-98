@@ -33,6 +33,6 @@ clean-old:
 	bash scripts/cleanup.sh
 
 test-smoke:
-	node scripts/smoke.js
+	node scripts/smoke_clean.js
 
 test: test-smoke
