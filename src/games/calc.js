@@ -1,6 +1,6 @@
 import { getRandomInt } from '../utils.js';
 
-const description = 'Resuelve la siguiente expresión. Usa solo números enteros y operadores +, - o *.';
+const description = '¿Cuál es el resultado de la expresión?';
 
 function compute(a, b, op) {
   switch (op) {
