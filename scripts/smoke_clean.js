@@ -19,7 +19,7 @@ let failCount = 0;
 
 console.log('Smoke test E2E: ejecutar cada juego con respuestas correctas simuladas');
 
-for (const g of games) {
+games.forEach((g) => {
   const rounds = [];
   const originalGenerate = g.mod.generateRound;
   g.mod.generateRound = () => {
@@ -33,29 +33,34 @@ for (const g of games) {
   let idx = 0;
   readlineSync.question = () => {
     if (idx === 0) {
-      idx++;
+      idx += 1;
       return inputs[0];
     }
     const roundIdx = idx - 1;
-    idx++;
+    idx += 1;
     return rounds[roundIdx] ? rounds[roundIdx].answer : '';
   };
 
   console.log(`\n--- Ejecutando juego: ${g.name} ---`);
   try {
     const res = runGame(g.mod);
-    if (res) { okCount += 1; console.log(`Resultado: OK - ${g.name}`); }
-    else { failCount += 1; console.log(`Resultado: FAIL - ${g.name}`); }
+    if (res) {
+      okCount += 1;
+      console.log(`Resultado: OK - ${g.name}`);
+    } else {
+      failCount += 1;
+      console.log(`Resultado: FAIL - ${g.name}`);
+    }
   } catch (err) {
     failCount += 1;
     console.error(`Error al ejecutar ${g.name}:`, err);
   }
   readlineSync.question = originalQuestion;
   g.mod.generateRound = originalGenerate;
-}
+});
 
 console.log('\nSmoke test E2E de fallo en primera ronda: respuesta incorrecta inmediata');
-for (const g of games) {
+games.forEach((g) => {
   const rounds = [];
   const originalGenerate = g.mod.generateRound;
   g.mod.generateRound = () => {
@@ -69,17 +74,17 @@ for (const g of games) {
   let idx = 0;
   readlineSync.question = () => {
     if (idx === 0) {
-      idx++;
+      idx += 1;
       return inputs[0];
     }
     const roundIdx = idx - 1;
-    idx++;
+    idx += 1;
     if (roundIdx === 0 && rounds[roundIdx]) {
       const first = rounds[roundIdx];
       if (first.answer === 'yes') return 'no';
       if (first.answer === 'no') return 'yes';
       const n = Number(first.answer);
-      return Number.isNaN(n) ? (first.answer + 'x') : String(n + 1);
+      return Number.isNaN(n) ? `${first.answer}x` : String(n + 1);
     }
     return rounds[roundIdx] ? rounds[roundIdx].answer : '';
   };
@@ -87,18 +92,23 @@ for (const g of games) {
   console.log(`\n--- Ejecutando fallo primera ronda para: ${g.name} ---`);
   try {
     const res = runGame(g.mod);
-    if (res) { okCount += 1; console.log(`Resultado inesperado OK en fallo primera ronda - ${g.name}`); }
-    else { failCount += 1; console.log(`Resultado esperado FAIL en fallo primera ronda - ${g.name}`); }
+    if (res) {
+      okCount += 1;
+      console.log(`Resultado inesperado OK en fallo primera ronda - ${g.name}`);
+    } else {
+      failCount += 1;
+      console.log(`Resultado esperado FAIL en fallo primera ronda - ${g.name}`);
+    }
   } catch (err) {
     failCount += 1;
     console.error(`Error al ejecutar fallo primera ronda ${g.name}:`, err);
   }
   readlineSync.question = originalQuestion;
   g.mod.generateRound = originalGenerate;
-}
+});
 
 console.log('\nSmoke test E2E de fallo: primera correcta, segunda incorrecta');
-for (const g of games) {
+games.forEach((g) => {
   const rounds = [];
   const originalGenerate = g.mod.generateRound;
   g.mod.generateRound = () => {
@@ -112,11 +122,11 @@ for (const g of games) {
   let idx = 0;
   readlineSync.question = () => {
     if (idx === 0) {
-      idx++;
+      idx += 1;
       return inputs[0];
     }
     const roundIdx = idx - 1;
-    idx++;
+    idx += 1;
     if (roundIdx === 0 && rounds[roundIdx]) {
       return rounds[roundIdx].answer;
     }
@@ -125,7 +135,7 @@ for (const g of games) {
       if (second.answer === 'yes') return 'no';
       if (second.answer === 'no') return 'yes';
       const n = Number(second.answer);
-      return Number.isNaN(n) ? (second.answer + 'x') : String(n + 1);
+      return Number.isNaN(n) ? `${second.answer}x` : String(n + 1);
     }
     return rounds[roundIdx] ? rounds[roundIdx].answer : '';
   };
@@ -133,14 +143,19 @@ for (const g of games) {
   console.log(`\n--- Ejecutando fallo para: ${g.name} ---`);
   try {
     const res = runGame(g.mod);
-    if (res) { okCount += 1; console.log(`Resultado inesperado OK en ruta de fallo - ${g.name}`); }
-    else { failCount += 1; console.log(`Resultado esperado FAIL en ruta de fallo - ${g.name}`); }
+    if (res) {
+      okCount += 1;
+      console.log(`Resultado inesperado OK en ruta de fallo - ${g.name}`);
+    } else {
+      failCount += 1;
+      console.log(`Resultado esperado FAIL en ruta de fallo - ${g.name}`);
+    }
   } catch (err) {
     failCount += 1;
     console.error(`Error al ejecutar fallo ${g.name}:`, err);
   }
   readlineSync.question = originalQuestion;
   g.mod.generateRound = originalGenerate;
-}
+});
 
 console.log(`\nResumen: OK: ${okCount}, Fallos: ${failCount}`);
