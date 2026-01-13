@@ -22,11 +22,13 @@ console.log('Smoke test E2E: ejecutar cada juego con respuestas correctas simula
 games.forEach((g) => {
   const rounds = [];
   const originalGenerate = g.mod.generateRound;
-  g.mod.generateRound = () => {
+  const mockGenerate = () => {
     const round = originalGenerate.call(g.mod);
     rounds.push(round);
     return round;
   };
+  
+  const gameMod = { ...g.mod, generateRound: mockGenerate };
 
   const inputs = ['SmokeTester'];
   const originalQuestion = readlineSync.question;
@@ -43,7 +45,7 @@ games.forEach((g) => {
 
   console.log(`\n--- Ejecutando juego: ${g.name} ---`);
   try {
-    const res = runGame(g.mod);
+    const res = runGame(gameMod);
     if (res) {
       okCount += 1;
       console.log(`Resultado: OK - ${g.name}`);
@@ -56,18 +58,19 @@ games.forEach((g) => {
     console.error(`Error al ejecutar ${g.name}:`, err);
   }
   readlineSync.question = originalQuestion;
-  g.mod.generateRound = originalGenerate;
 });
 
 console.log('\nSmoke test E2E de fallo en primera ronda: respuesta incorrecta inmediata');
 games.forEach((g) => {
   const rounds = [];
   const originalGenerate = g.mod.generateRound;
-  g.mod.generateRound = () => {
+  const mockGenerate = () => {
     const round = originalGenerate.call(g.mod);
     rounds.push(round);
     return round;
   };
+  
+  const gameMod = { ...g.mod, generateRound: mockGenerate };
 
   const inputs = ['SmokeTester'];
   const originalQuestion = readlineSync.question;
@@ -91,7 +94,7 @@ games.forEach((g) => {
 
   console.log(`\n--- Ejecutando fallo primera ronda para: ${g.name} ---`);
   try {
-    const res = runGame(g.mod);
+    const res = runGame(gameMod);
     if (res) {
       okCount += 1;
       console.log(`Resultado inesperado OK en fallo primera ronda - ${g.name}`);
@@ -104,18 +107,19 @@ games.forEach((g) => {
     console.error(`Error al ejecutar fallo primera ronda ${g.name}:`, err);
   }
   readlineSync.question = originalQuestion;
-  g.mod.generateRound = originalGenerate;
 });
 
 console.log('\nSmoke test E2E de fallo: primera correcta, segunda incorrecta');
 games.forEach((g) => {
   const rounds = [];
   const originalGenerate = g.mod.generateRound;
-  g.mod.generateRound = () => {
+  const mockGenerate = () => {
     const round = originalGenerate.call(g.mod);
     rounds.push(round);
     return round;
   };
+  
+  const gameMod = { ...g.mod, generateRound: mockGenerate };
 
   const inputs = ['SmokeTester'];
   const originalQuestion = readlineSync.question;
@@ -142,7 +146,7 @@ games.forEach((g) => {
 
   console.log(`\n--- Ejecutando fallo para: ${g.name} ---`);
   try {
-    const res = runGame(g.mod);
+    const res = runGame(gameMod);
     if (res) {
       okCount += 1;
       console.log(`Resultado inesperado OK en ruta de fallo - ${g.name}`);
@@ -155,7 +159,6 @@ games.forEach((g) => {
     console.error(`Error al ejecutar fallo ${g.name}:`, err);
   }
   readlineSync.question = originalQuestion;
-  g.mod.generateRound = originalGenerate;
 });
 
 console.log(`\nResumen: OK: ${okCount}, Fallos: ${failCount}`);
