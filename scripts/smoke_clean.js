@@ -27,7 +27,7 @@ games.forEach((g) => {
     rounds.push(round);
     return round;
   };
-  
+
   const gameMod = { ...g.mod, generateRound: mockGenerate };
 
   const inputs = ['SmokeTester'];
@@ -69,7 +69,7 @@ games.forEach((g) => {
     rounds.push(round);
     return round;
   };
-  
+
   const gameMod = { ...g.mod, generateRound: mockGenerate };
 
   const inputs = ['SmokeTester'];
@@ -118,7 +118,7 @@ games.forEach((g) => {
     rounds.push(round);
     return round;
   };
-  
+
   const gameMod = { ...g.mod, generateRound: mockGenerate };
 
   const inputs = ['SmokeTester'];
